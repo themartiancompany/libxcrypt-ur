@@ -1,25 +1,59 @@
+# SPDX-License-Identifier: AGPL-3.0
+#
 # Maintainer: Christian Hesse <mail@eworm.de>
+# Contributor: Pellegrino Prevete <pellegrinoprevete@gmail.com>
+# Contributor: Truocolo <truocolo@aol.com>
 
 pkgbase=libxcrypt
-pkgname=(libxcrypt libxcrypt-compat)
+pkgname=(
+  "${pkgbase}"
+  "${pkgbase}-compat"
+)
 pkgver=4.4.36
 pkgrel=1
 pkgdesc='Modern library for one-way hashing of passwords'
-arch=('x86_64')
-url='https://github.com/besser82/libxcrypt/'
-license=('LGPL')
-depends=('glibc')
-provides=('libcrypt.so')
-install=libxcrypt.install
-validpgpkeys=('678CE3FEE430311596DB8C16F52E98007594C21D') # Björn 'besser82' Esser
-source=("${url}/releases/download/v${pkgver}/${pkgbase}-${pkgver}.tar.xz"{,.asc})
-sha256sums=('e5e1f4caee0a01de2aee26e3138807d6d3ca2b8e67287966d1fefd65e1fd8943'
-            'SKIP')
+arch=(
+  'x86_64'
+  'arm'
+  'armv7h'
+  'aarch64'
+  'pentium4'
+  'i686'
+  'powerpc'
+)
+url="https://github.com/besser82/${pkgbase}"
+license=(
+  'LGPL'
+)
+depends=(
+  'glibc'
+)
+makedepends=(
+  'gcc'
+)
+provides=(
+  'libcrypt.so'
+)
+install="${pkgbase}.install"
+validpgpkeys=(
+  # Björn 'besser82' Esser
+  '678CE3FEE430311596DB8C16F52E98007594C21D'
+  )
+source=(
+  "${url}/releases/download/v${pkgver}/${pkgbase}-${pkgver}.tar.xz"{,.asc}
+)
+sha256sums=(
+  'e5e1f4caee0a01de2aee26e3138807d6d3ca2b8e67287966d1fefd65e1fd8943'
+  'SKIP'
+)
 
 build() {
-  mkdir build-libxcrypt build-libxcrypt-compat
+  mkdir \
+    "build-${pkgbase}" \
+    "build-${pkgbase}-compat"
 
-  cd "${srcdir}/build-libxcrypt/"
+  cd \
+    "${srcdir}/build-${pkgbase}"
   "${srcdir}/${pkgbase}-${pkgver}"/configure \
     --prefix=/usr \
     --disable-static \
@@ -28,7 +62,8 @@ build() {
     --disable-failure-tokens
   make
   
-  cd "${srcdir}/build-libxcrypt-compat/"
+  cd \
+    "${srcdir}/build-${pkgbase}-compat"
   "${srcdir}/${pkgbase}-${pkgver}"/configure \
     --prefix=/usr \
     --disable-static \
@@ -39,24 +74,35 @@ build() {
 }
 
 check() {
-  cd build-libxcrypt/
-
-  make check 
+  cd \
+    "build-${pkgbase}"
+  make \
+    check 
 }
 
 package_libxcrypt() {
-  cd build-libxcrypt/
-
-  make DESTDIR="${pkgdir}" install
+  cd \
+    "build-${pkgbase}"
+  make \
+    DESTDIR="${pkgdir}" \
+    install
 }
 
 package_libxcrypt-compat() {
   pkgdesc='Modern library for one-way hashing of passwords - legacy API functions'
-  depends=('libxcrypt')
-  
-  cd build-libxcrypt-compat/
+  depends=(
+    "${pkgbase}"
+  )
+  cd \
+    "build-${pkgbase}-compat"
 
-  make DESTDIR="${pkgdir}" install
+  make \
+    DESTDIR="${pkgdir}" \
+    install
 
-  rm -rf "${pkgdir}"/usr/{include,lib/{lib*.so,pkgconfig},share}
+  rm \
+    -rf \
+    "${pkgdir}"/usr/{include,lib/{lib*.so,pkgconfig},share}
 }
+
+# vim: ft=sh syn=sh et
