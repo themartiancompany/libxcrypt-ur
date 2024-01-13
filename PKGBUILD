@@ -4,6 +4,7 @@
 # Contributor: Pellegrino Prevete <pellegrinoprevete@gmail.com>
 # Contributor: Truocolo <truocolo@aol.com>
 
+_py="python"
 pkgbase=libxcrypt
 pkgname=(
   "${pkgbase}"
@@ -29,7 +30,10 @@ depends=(
   'glibc'
 )
 makedepends=(
-  'gcc'
+  "gcc"
+)
+optdepends=(
+  "${_py}-passlib: to enable ka-table option"
 )
 provides=(
   'libcrypt.so'

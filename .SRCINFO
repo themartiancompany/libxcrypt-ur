@@ -14,6 +14,7 @@ pkgbase = libxcrypt
 	license = LGPL
 	makedepends = gcc
 	depends = glibc
+	optdepends = python-passlib: to enable ka-table option
 	provides = libcrypt.so
 	source = https://github.com/besser82/libxcrypt/releases/download/v4.4.36/libxcrypt-4.4.36.tar.xz
 	source = https://github.com/besser82/libxcrypt/releases/download/v4.4.36/libxcrypt-4.4.36.tar.xz.asc
