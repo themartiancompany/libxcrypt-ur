@@ -89,7 +89,11 @@ provides=(
   "libcrypt"
   "libcrypt.so"
 )
-install="${pkgbase}.install"
+conflicts=(
+  "libcrypt"
+  "libcrypt.so"
+)
+install="${_pkg}.install"
 validpgpkeys=(
   # Björn 'besser82' Esser
   '678CE3FEE430311596DB8C16F52E98007594C21D'
