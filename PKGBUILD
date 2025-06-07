@@ -119,6 +119,7 @@ build() {
     --disable-failure-tokens
   )
   mkdir \
+    -p \
     "build-${_pkg}" \
     "build-${_pkg}-compat"
   cd \
