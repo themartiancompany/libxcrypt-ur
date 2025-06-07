@@ -67,7 +67,7 @@ arch=(
   'x86_64'
 )
 _http="https://github.com"
-_ns="basser82"
+_ns="besser82"
 url="${_http}/${_ns}/${_pkg}"
 license=(
   'LGPL'
