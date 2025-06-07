@@ -123,7 +123,6 @@ build() {
     "${CFLAGS}"
     -fuse-ld="${_linker}"
   )
-  )
   _configure_opts+=(
     --prefix="/usr"
     --disable-static
