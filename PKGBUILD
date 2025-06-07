@@ -34,6 +34,7 @@
 _os="$( \
   uname \
     -o)"
+_linker="ld"
 if [[ "${_os}" == "Android" ]]; then
   _cc="clang"
   _libc="ndk-sysroot"
@@ -78,6 +79,11 @@ depends=(
 makedepends=(
   "${_cc}"
 )
+if [[ "${_os}" == "Android" ]]; then
+  makedepends+=(
+    "binutils"
+  )
+fi
 _passlib_optdepends=(
   "${_py}-passlib:"
     "to enable ka-table option."
@@ -111,7 +117,13 @@ sha256sums=(
 
 build() {
   local \
-    _configure_opts=()
+    _configure_opts=() \
+    _cflags=()
+  _cflags=(
+    "${CFLAGS}"
+    -fuse-ld="${_linker}"
+  )
+  )
   _configure_opts+=(
     --prefix="/usr"
     --disable-static
@@ -130,9 +142,13 @@ build() {
   make
   cd \
     "${srcdir}/build-${_pkg}-compat"
+  export \
+    CFLAGS="${_cflags[*]}"
+  CFLAGS="${_cflags[*]}" \
   "${srcdir}/${_tarname}/configure" \
     "${_configure_opts[@]}" \
     --enable-obsolete-api="glibc"
+  CFLAGS="${_cflags[*]}" \
   make
 }
 
